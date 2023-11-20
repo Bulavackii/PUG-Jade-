@@ -1,0 +1,198 @@
+doctype html
+html(lang="en")
+    head
+        include ./includs/head
+    body 
+
+//a
+
+a(
+    href='#'
+    target='_blank'
+    title='Заголовок'
+    ).link__class#link_id Название ссылки
+
+p
+    | Lorem ipsum dolor sit, amet #[a(href='#' target='_blank') Название ссылки]consectetur adipisicing elit. Ullam velit ab quasi reprehenderit, cupiditate neque consequuntur quidem ex voluptatem qui commodi, dolore quod temporibus. Impedit, magnam? Non expedita ut labore?
+    br
+    | Lorem ipsum dolor sit amet consectetur <a href='#'>adipisicing elit</a>. Labore dolorem deserunt ut, expedita pariatur fuga excepturi. Reprehenderit ratione repudiandae enim nam, sunt quae adipisci voluptas atque, culpa, quos ipsum. Magni. Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+    br
+    | Numquam a voluptates ullam impedit et facere excepturi ipsam officiis adipisci nihil autem laudantium eaque, praesentium corporis voluptatibus id delectus commodi aperiam.
+
+
+
+    //Comments
+    //
+        Comments
+
+    //-Hide comments
+    //-
+        Hide comments
+
+    script
+        include ./scripts.js
+
+
+
+//Cycles
+
+-   
+    var menuData = [
+        {
+            title: 'Главная',
+            url: '/'
+        },
+         {
+            title: 'О нас',
+            url: 'about.html'
+        },
+         {
+            title: 'Контакты',
+            url: 'contacts.html'
+        }
+    ]
+
+nav.ul.list#listItems
+    each item in menuData
+        li.menu__item
+            a(href=item.url)=item.title
+
+//Еще вариант
+
+nav.menu
+    ul.menu__list
+        each name in ['Главная', 'О компании', 'Услуги', 'Каталог', 'Контакты']
+            li
+                a(href="#")= name
+
+//Еще вариант
+
+nav.menu
+    ul.menu__list
+        each value, index in {'Главная' : 'home', 'О компании' : 'about', 'Услуги' : 'services', 'Каталог' : 'catalog', 'Контакты' : 'contact'}
+            li
+                a(href= "/" + value + ".html")= index
+
+
+
+//Mixin declaration
+
+//- Mixin declaration
+mixin listItem(name)    
+    li= name
+    
+//- Call mixin
+ul.list-items
+    +listItem("One")
+    +listItem("Two")
+    +listItem("Five")
+|
+|
+//- Mixin declaration
+mixin article(title="Заголовок по умолчанию")
+    article.article
+        h1= title
+
+//- Call mixin
++article()
+
+
+//- Mixin declaration
+mixin article(title)
+    article.article
+        h1= title
+        if block
+            block
+        else
+            p Нет контента для отображения
+
+//- Call mixin
++article("Заголовок страницы")
+    p Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+    p Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+
+
+
+//- Mixin declaration
+mixin article(title)
+    article.article
+        h1= title
+        if block
+            block
+        else
+            p Нет контента для отображения
+
+//- Call mixin
++article("Заголовок страницы")
+    p Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+    p Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+
+
+
+
+//attributes
+
+
+mixin link(href, name)
+    //- attributes == {class: "link-btn"}
+    a(class!= attributes.class href= href)= name
+
++link('/link.html', 'Название ссылки')(class="link-btn")
+
+
+
+
+//-Произвольные аттрибуты
+
+mixin link(href, name)
+    // Произвольные атрибуты
+    a(href= href)&attributes(attributes)= name
+
++link('link.html', 'Название ссылки')(target="_blank" data-type="link")
+
+
+//rest arguments
+
+mixin list(id, ...items)
+    ul(id= id)
+        each item in items
+            li= item
+
++list('myList', 1, 2, 3, 4)
+
+
+
+
+//Условия 
+
+nav.menu
+    ul.menu__list
+        - var i = 1;
+        each name in ['Главная', 'О нас', 'Контакты']
+            if i == 1
+                li.active
+                    a(href="#")= name
+            else
+                li
+                    a(href="#")= name
+
+//Case
+
+- var friends = 10
+case friends
+    when 0: p вы не имеете друзей
+    when 1: p вы имеете одного друга
+    default: p вы имеете #{friends} друзей
+
+//Буферизированный код
+
+p
+    = 'Строка текста с тегом <strong>выделения</strong>.'
+
+
+
+//Неэкранированный буферизированный код
+
+p
+    != 'Строка текста с тегом <strong>выделения</strong>.'
